@@ -7,7 +7,10 @@ let port = process.env.PORT
 if (port == null || port === '') {
   port = 8000
 }
-app.listen(port)
+
+app.get('/', function (req, res) {
+  res.send('Get root test')
+})
 
 app.use(cors())
 app.use(bodyParser.json())
