@@ -1,0 +1,28 @@
+.arrow {
+    cursor: default;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-text {
+    align-self: flex-start;
+}
+
+.item-icon {
+    align-self: flex-end;
+}
+
+.nav-color {
+    background-color: inherit;
+}
+
+.nav-color:focus {
+    outline: 0px;
+}

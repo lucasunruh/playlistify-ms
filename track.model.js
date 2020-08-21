@@ -1,11 +1,14 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-let Playlist = new Schema({
+let Track = new Schema({
   name: {
     type: String
   },
-  tracks: [{
+  album: {
+    type: String
+  },
+  artists: [{
     id: {
       type: String
     },
@@ -15,4 +18,4 @@ let Playlist = new Schema({
   }]
 })
 
-module.exports = mongoose.model('playlists', Playlist)
+module.exports = mongoose.model('tracks', Track)

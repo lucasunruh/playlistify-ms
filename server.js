@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const ObjectId = require('mongodb').ObjectId
 const playlistRoutes = express.Router()
+const trackRoutes = express.Router()
 require('./database')
 
 let port = process.env.PORT
@@ -14,6 +16,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 let Playlist = require('./playlist.model')
+let Track = require('./track.model')
 
 playlistRoutes.route('/').get(function (req, res) {
   Playlist.find(function (err, playlists) {
@@ -36,7 +39,48 @@ playlistRoutes.route('/add').post(function (req, res) {
     })
 })
 
+playlistRoutes.route('/track/add').put(function (req, res) {
+  Playlist.updateOne(
+    {_id: ObjectId(req.body._id)},
+    { $push: {
+      tracks: {
+        id: req.body.id,
+        name: req.body.name
+      }
+    }}
+  )
+    .then(playlist => {
+      res.status(200).json({ 'track': 'Track added successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Adding new track failed with message ' + err)
+    })
+})
+
+trackRoutes.route('/').get(function (req, res) {
+  Track.find(function (err, playlists) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(playlists)
+    }
+  })
+})
+
+trackRoutes.route('/add').post(function (req, res) {
+  let track = new Track(req.body)
+  track.save()
+    .then(track => {
+      res.status(200).json({ 'track': 'Track added successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Adding new track failed with message ' + err)
+    })
+})
+
 app.use('/playlists', playlistRoutes)
+app.use('/tracks', trackRoutes)
+
 
 app.get('/', function (req, res) {
   res.send('Get root test')
