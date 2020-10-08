@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const path = require('path')
 const ObjectId = require('mongodb').ObjectId
 const playlistRoutes = express.Router()
 const trackRoutes = express.Router()
@@ -9,7 +10,7 @@ require('./database')
 
 let port = process.env.PORT
 if (port == null || port === '') {
-  port = 8000
+  port = 5000
 }
 
 app.use(cors())
@@ -18,7 +19,7 @@ app.use(bodyParser.json())
 let Playlist = require('./playlist.model')
 let Track = require('./track.model')
 
-playlistRoutes.route('/').get(function (req, res) {
+/* playlistRoutes.route('/').get(function (req, res) {
   Playlist.find(function (err, playlists) {
     if (err) {
       console.log(err)
@@ -26,7 +27,7 @@ playlistRoutes.route('/').get(function (req, res) {
       res.json(playlists)
     }
   })
-})
+}) */
 
 playlistRoutes.route('/add').post(function (req, res) {
   let playlist = new Playlist(req.body)
@@ -78,13 +79,20 @@ trackRoutes.route('/add').post(function (req, res) {
     })
 })
 
+playlistRoutes.use(function(req, res) {
+  res.sendFile(path.join(__dirname, '../playlistify/build/index.html'));
+  //alert('hmm')
+  //res.sendFile('C:/Users/lucas/Documents/GitHub/playlistify-ms/playlistify/build/index.html');
+});
+app.use(express.static('playlistify/build'))
+
 app.use('/playlists', playlistRoutes)
 app.use('/tracks', trackRoutes)
 
 
-app.get('/', function (req, res) {
+/* app.get('/', function (req, res) {
   res.send('Get root test')
-})
+}) */
 
 app.listen(port, function () {
   console.log('Server is running on Port: ' + port)
