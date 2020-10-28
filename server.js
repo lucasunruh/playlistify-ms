@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
 const ObjectId = require('mongodb').ObjectId
+const clientRoute = express.Router()
 const playlistRoutes = express.Router()
 const trackRoutes = express.Router()
 require('./database')
@@ -19,7 +20,7 @@ app.use(bodyParser.json())
 let Playlist = require('./playlist.model')
 let Track = require('./track.model')
 
-/* playlistRoutes.route('/').get(function (req, res) {
+playlistRoutes.route('/').get(function (req, res) {
   Playlist.find(function (err, playlists) {
     if (err) {
       console.log(err)
@@ -27,7 +28,7 @@ let Track = require('./track.model')
       res.json(playlists)
     }
   })
-}) */
+})
 
 playlistRoutes.route('/add').post(function (req, res) {
   let playlist = new Playlist(req.body)
@@ -59,11 +60,11 @@ playlistRoutes.route('/track/add').put(function (req, res) {
 })
 
 trackRoutes.route('/').get(function (req, res) {
-  Track.find(function (err, playlists) {
+  Track.find(function (err, tracks) {
     if (err) {
       console.log(err)
     } else {
-      res.json(playlists)
+      res.json(tracks)
     }
   })
 })
@@ -79,16 +80,14 @@ trackRoutes.route('/add').post(function (req, res) {
     })
 })
 
-playlistRoutes.use(function(req, res) {
+clientRoute.use(function(req, res) {
   res.sendFile(path.join(__dirname, '../playlistify/build/index.html'));
-  //alert('hmm')
-  //res.sendFile('C:/Users/lucas/Documents/GitHub/playlistify-ms/playlistify/build/index.html');
 });
 app.use(express.static('playlistify/build'))
 
 app.use('/playlists', playlistRoutes)
 app.use('/tracks', trackRoutes)
-
+app.use('/', clientRoute)
 
 /* app.get('/', function (req, res) {
   res.send('Get root test')
