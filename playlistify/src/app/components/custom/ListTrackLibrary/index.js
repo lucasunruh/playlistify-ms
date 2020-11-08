@@ -26,7 +26,7 @@ const ListTrackLibraryContainer = props => {
       .then(res => setTracks(res.data))
   }, [])
   return (
-    <ListPlaylistTracks addATrack={addTrack} tracks={tracks} />
+    <ListPlaylistTracks addTrack={addTrack} tracks={tracks} />
   )
 }
 
