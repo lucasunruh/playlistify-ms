@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { apiPath } from '../../../../constants'
+import { apiPath } from '../../../utils/constants'
 import ListPlaylists from './ListPlaylists'
 
 const addPlaylist = playlistName => {

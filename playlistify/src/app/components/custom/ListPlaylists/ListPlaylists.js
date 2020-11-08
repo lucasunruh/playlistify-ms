@@ -3,6 +3,9 @@ import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
 const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
   const [playlistName, setPlaylistName] = useState('')
+  const [editing, setEditing] = useState('')
+  const [isEditing, setIsEditing] = useState(false)
+  const [editName, setEditName] = useState('')
   return (
     <div className='card'>
       <div className='card-header'>
@@ -25,8 +28,59 @@ const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
             {playlists.length > 0 ? playlists.map(playlist => (
               <tr key={playlist._id} className={`arrow ${playlist._id === current._id && 'table-active'}`}>
                 <td className='flex-container' onClick={() => setCurrent(playlist)}>
-                  {playlist.name}
-                  <Icon className='ml-3 pointer' icon={['far', 'edit']} />
+                  {playlist._id === editing
+                    ? (
+                      <>
+                        <input className='form-control' type='text' value={editName} onChange={e => setEditName(e.target.value)} />
+                        <Icon
+                          className='ml-3 pointer'
+                          icon='check'
+                          onClick={() => {
+                            if (!isEditing) {
+                              /* setEditing(playlist._id)
+                              setEditName(playlist.name)
+                              setIsEditing(true) */
+                            } else {
+                              setEditing('')
+                              setIsEditing(false)
+                            }
+                          }}
+                        />
+                        <Icon
+                          className='ml-3 pointer'
+                          icon='times'
+                          onClick={() => {
+                            if (!isEditing) {
+                              /* setEditing(playlist._id)
+                              setEditName(playlist.name)
+                              setIsEditing(true) */
+                            } else {
+                              setEditing('')
+                              setIsEditing(false)
+                            }
+                          }}
+                        />
+                      </>
+                    )
+                    : (
+                      <>
+                        {playlist.name}
+                        <Icon
+                          className='ml-3 pointer'
+                          icon={['far', 'edit']}
+                          onClick={() => {
+                            if (!isEditing) {
+                              setEditing(playlist._id)
+                              setEditName(playlist.name)
+                              setIsEditing(true)
+                            } else {
+                              /* setEditing('')
+                              setIsEditing(false) */
+                            }
+                          }}
+                        />
+                      </>
+                    )}
                 </td>
               </tr>
             ))
