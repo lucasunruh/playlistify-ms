@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
-const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
+const ListPlaylists = ({ playlists, addPlaylist, deletePlaylist, current, setCurrent }) => {
   const [playlistName, setPlaylistName] = useState('')
   const [editing, setEditing] = useState('')
   const [isEditing, setIsEditing] = useState(false)
@@ -35,6 +35,7 @@ const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
                         <Icon
                           className='ml-3 pointer'
                           icon='check'
+                          title='Submit'
                           onClick={() => {
                             if (!isEditing) {
                               /* setEditing(playlist._id)
@@ -49,6 +50,7 @@ const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
                         <Icon
                           className='ml-3 pointer'
                           icon='times'
+                          title='Cancel'
                           onClick={() => {
                             if (!isEditing) {
                               /* setEditing(playlist._id)
@@ -65,20 +67,27 @@ const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
                     : (
                       <>
                         {playlist.name}
-                        <Icon
-                          className='ml-3 pointer'
-                          icon={['far', 'edit']}
-                          onClick={() => {
-                            if (!isEditing) {
-                              setEditing(playlist._id)
-                              setEditName(playlist.name)
-                              setIsEditing(true)
-                            } else {
-                              /* setEditing('')
-                              setIsEditing(false) */
-                            }
-                          }}
-                        />
+                        <span>
+                          <Icon
+                            className='ml-3 pointer'
+                            icon={['far', 'edit']}
+                            onClick={() => {
+                              if (!isEditing) {
+                                setEditing(playlist._id)
+                                setEditName(playlist.name)
+                                setIsEditing(true)
+                              } else {
+                                /* setEditing('')
+                                setIsEditing(false) */
+                              }
+                            }}
+                          />
+                          <Icon
+                            className='ml-3 pointer'
+                            icon={['far', 'trash-alt']}
+                            onClick={() => deletePlaylist(playlist._id)}
+                          />
+                        </span>
                       </>
                     )}
                 </td>
@@ -86,7 +95,7 @@ const ListPlaylists = ({ playlists, addPlaylist, current, setCurrent }) => {
             ))
               : <><span>Loading Playlists...</span>
                 <Icon icon='stroopwafel' spin size='3x' />
-                </>}
+              </>}
           </tbody>
         </table>
       </div>

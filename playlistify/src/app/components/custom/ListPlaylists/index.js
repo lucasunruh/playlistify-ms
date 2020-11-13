@@ -9,14 +9,20 @@ const addPlaylist = playlistName => {
     .catch(err => console.log(err))
 }
 
+const deletePlaylist = playlistId => {
+  axios.delete(`${apiPath}/playlists/delete`, { data: { _id: playlistId } })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+}
+
 const ListPlaylistsContainer = props => {
   const [playlists, setPlaylists] = useState([])
   useEffect(() => {
     axios.get(`${apiPath}/playlists`)
       .then(res => setPlaylists(res.data))
-  }, [])
+  })
   return (
-    <ListPlaylists addPlaylist={addPlaylist} playlists={playlists} {...props} />
+    <ListPlaylists addPlaylist={addPlaylist} deletePlaylist={deletePlaylist} playlists={playlists} {...props} />
   )
 }
 

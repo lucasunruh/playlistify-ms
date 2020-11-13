@@ -41,6 +41,16 @@ playlistRoutes.route('/add').post(function (req, res) {
     })
 })
 
+playlistRoutes.route('/delete').delete(function (req, res) {
+  Playlist.deleteOne({_id: ObjectId(req.body._id)})
+    .then(playlist => {
+      res.status(200).json({ 'playlist': 'Playlist deleted successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Adding new track failed with message ' + err)
+    })
+})
+
 playlistRoutes.route('/track/add').put(function (req, res) {
   Playlist.updateOne(
     {_id: ObjectId(req.body._id)},

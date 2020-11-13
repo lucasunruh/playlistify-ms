@@ -4,12 +4,11 @@ const Login = ({ setIsAuth }) => {
   const [user, setUser] = useState('')
   const [pass, setPass] = useState('')
   const [noAuth, setNoAuth] = useState(false)
+  const checkPass = (user, pass) => {
+    return user === 'lucas' && pass === 'yeet'
+  }
   const checkAuth = () => {
-    if (user === 'lucas' && pass === 'yeet') {
-      setIsAuth(true)
-    } else {
-      setNoAuth(true)
-    }
+    checkPass(user, pass) ? setIsAuth(true) : setNoAuth(true)
   }
   return (<div className='card'>
     <div className='card-header'>
@@ -27,7 +26,7 @@ const Login = ({ setIsAuth }) => {
       </div>
       <button className='btn btn-primary' onClick={() => checkAuth()}>Login</button>
     </div>
-          </div>
+  </div>
   )
 }
 

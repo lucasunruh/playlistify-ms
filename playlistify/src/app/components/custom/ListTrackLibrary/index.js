@@ -3,28 +3,27 @@ import axios from 'axios'
 import { apiPath } from '../../../utils/constants'
 import ListPlaylistTracks from './ListTrackLibrary'
 
-const addTrack = trackInfo => {
-  axios.post(`${apiPath}/tracks/add`,
-    {
-      name: trackInfo.trackName,
-      album: trackInfo.albumName,
-      artists: [
-        {
-          id: '-1',
-          name: trackInfo.artistName
-        }
-      ]
-    })
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-}
-
-const ListTrackLibraryContainer = props => {
+const ListTrackLibraryContainer = () => {
   const [tracks, setTracks] = useState([])
+  const addTrack = trackInfo => {
+    axios.post(`${apiPath}/tracks/add`,
+      {
+        name: trackInfo.trackName,
+        album: trackInfo.albumName,
+        artists: [
+          {
+            id: '-1',
+            name: trackInfo.artistName
+          }
+        ]
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
   useEffect(() => {
     axios.get(`${apiPath}/tracks`)
       .then(res => setTracks(res.data))
-  }, [])
+  })
   return (
     <ListPlaylistTracks addTrack={addTrack} tracks={tracks} />
   )

@@ -19,7 +19,7 @@ const ListPlaylistTracksContainer = props => {
   useEffect(() => {
     axios.get(`${apiPath}/tracks`)
       .then(res => setTracks(res.data))
-  }, [])
+  })
   return (
     <ListPlaylistTracks addATrack={addATrack} tracks={tracks} {...props} />
   )
