@@ -24,6 +24,9 @@ const ListTrackLibrary = ({ tracks, addTrack, deleteTrack }) => {
         albumName: albumName,
         artistName: artistName
       })
+      setTrackName('')
+      setAlbumName('')
+      setArtistName('')
     }
   }
   return (

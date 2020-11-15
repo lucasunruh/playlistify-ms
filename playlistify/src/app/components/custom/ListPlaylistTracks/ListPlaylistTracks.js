@@ -3,34 +3,42 @@ import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
 const ListPlaylistTracks = ({ playlist, allTracks, addATrack, removeTrack }) => {
   const [addTrack, setAddTrack] = useState({})
+  const [isTrack, setIsTrack] = useState('')
+  const submit = (playlist, track) => {
+    Object.entries(addTrack).length !== 0 ? addATrack(playlist, track) : setIsTrack(false)
+    setAddTrack({})
+  }
   return (
     <div className='card'>
-      {playlist.name &&
+      {playlist && playlist.name &&
         <div className='card-header'>
           <strong>{playlist.name}</strong>
         </div>}
       <div className='card-body'>
-        {playlist.name
+        {playlist && playlist.name
           ? <table className='table table-hover table-striped'>
             <tbody>
               <tr key='addPlaylistTrack'>
                 <td className='form-inline'>
                   <select
-                    className='form-control'
+                    className={`form-control ${isTrack === false && 'is-invalid'}`}
+                    value={JSON.stringify(addTrack)}
                     onChange={e => {
                       setAddTrack(JSON.parse(e.target.value))
+                      setIsTrack(true)
                     }}
                   >
-                    <option>Choose a song to add</option>
+                    <option value={JSON.stringify({})}>Choose a song to add</option>
                     {allTracks && allTracks.map(track => (
                       <option key={track._id} value={JSON.stringify(track)}>{track.name}</option>
                     ))}
                   </select>
                   <button
                     className='btn btn-primary ml-3'
-                    onClick={() => addATrack(playlist, addTrack)}
+                    onClick={() => submit(playlist, addTrack)}
                   >Add
                   </button>
+                  {isTrack === false && <div className='invalid-feedback'>Please select a song</div>}
                 </td>
               </tr>
               {playlist.tracks && playlist.tracks.map(track => (
@@ -49,7 +57,7 @@ const ListPlaylistTracks = ({ playlist, allTracks, addATrack, removeTrack }) => 
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
           : <span>Select a playlist to view tracks</span>}
       </div>
     </div>

@@ -6,6 +6,11 @@ const ListPlaylists = ({ playlists, addPlaylist, editPlaylist, deletePlaylist, c
   const [editing, setEditing] = useState('')
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState('')
+  const [isPlaylist, setIsPlaylist] = useState('')
+  const submit = () => {
+    playlistName ? addPlaylist(playlistName) : setIsPlaylist(false)
+    setPlaylistName('')
+  }
   return (
     <div className='card'>
       <div className='card-header'>
@@ -16,10 +21,19 @@ const ListPlaylists = ({ playlists, addPlaylist, editPlaylist, deletePlaylist, c
           <tbody>
             <tr key='addPlaylist'>
               <td className='form-inline'>
-                <input className='form-control' type='text' value={playlistName} onChange={e => setPlaylistName(e.target.value)} placeholder={`New Playlist ${'X'}`} />
+                <input
+                  className={`form-control ${isPlaylist === false && 'is-invalid'}`}
+                  type='text' value={playlistName}
+                  onChange={e => {
+                    setPlaylistName(e.target.value)
+                    setIsPlaylist(true)
+                  }}
+                  placeholder={`New Playlist ${'X'}`}
+                />
+                {isPlaylist === false && <div className='invalid-feedback'>Please enter a name</div>}
                 <button
                   className='btn btn-primary ml-3'
-                  onClick={() => addPlaylist(playlistName)}
+                  onClick={submit}
                 >
             Add
                 </button>
