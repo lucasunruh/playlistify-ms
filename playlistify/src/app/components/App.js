@@ -12,7 +12,7 @@ import '../styles/App.css'
 library.add(faEdit, faTrashAlt, faStroopwafel, faGripLines, faCheck, faTimes)
 
 function App () {
-  const [current, setCurrent] = useState({})
+  const [current, setCurrent] = useState('')
   const [isAuth, setIsAuth] = useState(true) // false to display login
   return (
     <>
@@ -29,12 +29,12 @@ function App () {
             <div className='col-xl-5 mt-3'>
               <ListTrackLibrary />
             </div>
-          </div>)
+             </div>)
           : (<div className='row justify-content-center'>
             <div className='col-4 mt-3'>
               <Login setIsAuth={setIsAuth} />
             </div>
-          </div>)}
+             </div>)}
       </div>
     </>
   )

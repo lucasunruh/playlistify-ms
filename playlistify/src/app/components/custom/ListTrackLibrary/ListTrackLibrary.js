@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
-const ListTrackLibrary = ({ tracks, addTrack }) => {
+const ListTrackLibrary = ({ tracks, addTrack, deleteTrack }) => {
   const [isTouched, setIsTouched] = useState({ track: false, album: false, artist: false })
   const [isTrack, setIsTrack] = useState('')
   const [isAlbum, setIsAlbum] = useState('')
@@ -87,7 +87,7 @@ const ListTrackLibrary = ({ tracks, addTrack }) => {
                   className='btn btn-primary'
                   onClick={setDetails}
                 >
-            Add
+                  Add
                 </button>
               </td>
             </tr>
@@ -96,7 +96,14 @@ const ListTrackLibrary = ({ tracks, addTrack }) => {
                 <td>{track.name}</td>
                 <td>{track.album}</td>
                 <td>{track.artists[0].name}</td>
-                <td className='text-center'><Icon className='pointer' icon={['far', 'edit']} /></td>
+                <td className='text-center'>
+                  <Icon className='pointer' icon={['far', 'edit']} />
+                  <Icon
+                    className='ml-3 pointer'
+                    icon={['far', 'trash-alt']}
+                    onClick={() => deleteTrack(track._id)}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

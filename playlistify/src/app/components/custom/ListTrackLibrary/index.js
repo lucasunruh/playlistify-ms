@@ -20,12 +20,17 @@ const ListTrackLibraryContainer = () => {
       .then(res => console.log(res))
       .catch(err => console.log(err))
   }
+  const deleteTrack = trackId => {
+    axios.delete(`${apiPath}/tracks/delete`, { data: { _id: trackId } })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
   useEffect(() => {
     axios.get(`${apiPath}/tracks`)
       .then(res => setTracks(res.data))
   })
   return (
-    <ListPlaylistTracks addTrack={addTrack} tracks={tracks} />
+    <ListPlaylistTracks addTrack={addTrack} deleteTrack={deleteTrack} tracks={tracks} />
   )
 }
 

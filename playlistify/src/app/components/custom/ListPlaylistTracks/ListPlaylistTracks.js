@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
-const ListPlaylistTracks = ({ tracks, addATrack, current }) => {
+const ListPlaylistTracks = ({ playlist, allTracks, addATrack, removeTrack }) => {
   const [addTrack, setAddTrack] = useState({})
   return (
     <div className='card'>
-      {current.name &&
+      {playlist.name &&
         <div className='card-header'>
-          <strong>{current.name}</strong>
+          <strong>{playlist.name}</strong>
         </div>}
       <div className='card-body'>
-        {current.name
+        {playlist.name
           ? <table className='table table-hover table-striped'>
             <tbody>
               <tr key='addPlaylistTrack'>
@@ -22,24 +22,28 @@ const ListPlaylistTracks = ({ tracks, addATrack, current }) => {
                     }}
                   >
                     <option>Choose a song to add</option>
-                    {tracks && tracks.map(track => (
+                    {allTracks && allTracks.map(track => (
                       <option key={track._id} value={JSON.stringify(track)}>{track.name}</option>
                     ))}
                   </select>
                   <button
                     className='btn btn-primary ml-3'
-                    onClick={() => addATrack(current, addTrack)}
+                    onClick={() => addATrack(playlist, addTrack)}
                   >Add
                   </button>
                 </td>
               </tr>
-              {current.tracks && current.tracks.map(track => (
+              {playlist.tracks && playlist.tracks.map(track => (
                 <tr key={track._id} className='arrow'>
                   <td className='flex-container'>
                     {track.name}
                     <span>
-                      <Icon className='pointer' icon={['far', 'trash-alt']} />
-                      <Icon className='ml-2 pointer' icon='grip-lines' />
+                      <Icon
+                        className='pointer'
+                        icon={['far', 'trash-alt']}
+                        onClick={() => removeTrack(playlist._id, track._id)}
+                      />
+                      {/* <Icon className='ml-2 pointer' icon='grip-lines' /> */}
                     </span>
                   </td>
                 </tr>

@@ -30,6 +30,16 @@ playlistRoutes.route('/').get(function (req, res) {
   })
 })
 
+playlistRoutes.route('/:id').get(function (req, res) {
+  Playlist.findOne({_id: ObjectId(req.params.id)}, function (err, playlist) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(playlist)
+    }
+  })
+})
+
 playlistRoutes.route('/add').post(function (req, res) {
   let playlist = new Playlist(req.body)
   playlist.save()
@@ -47,7 +57,20 @@ playlistRoutes.route('/delete').delete(function (req, res) {
       res.status(200).json({ 'playlist': 'Playlist deleted successfully' })
     })
     .catch(err => {
-      res.status(400).send('Adding new track failed with message ' + err)
+      res.status(400).send('Deleting playlist failed with message ' + err)
+    })
+})
+
+playlistRoutes.route('/edit').put(function (req, res) {
+  Playlist.updateOne(
+    {_id: ObjectId(req.body._id)},
+    {name: req.body.name}
+  )
+    .then(playlist => {
+      res.status(200).json({ 'playlist': 'Playlist name edited successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Editing playlist name failed with message ' + err)
     })
 })
 
@@ -69,6 +92,23 @@ playlistRoutes.route('/track/add').put(function (req, res) {
     })
 })
 
+playlistRoutes.route('/track/remove').put(function (req, res) {
+  Playlist.updateOne(
+    {_id: ObjectId(req.body._idPlaylist)},
+    { $pull: {
+      tracks: {
+        _id: ObjectId(req.body._idTrack)
+      }
+    }}
+  )
+    .then(playlist => {
+      res.status(200).json({ 'track': 'Track removed successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Removing track failed with message ' + err)
+    })
+})
+
 trackRoutes.route('/').get(function (req, res) {
   Track.find(function (err, tracks) {
     if (err) {
@@ -87,6 +127,16 @@ trackRoutes.route('/add').post(function (req, res) {
     })
     .catch(err => {
       res.status(400).send('Adding new track failed with message ' + err)
+    })
+})
+
+trackRoutes.route('/delete').delete(function (req, res) {
+  Track.deleteOne({_id: ObjectId(req.body._id)})
+    .then(track => {
+      res.status(200).json({ 'track': 'Track deleted successfully' })
+    })
+    .catch(err => {
+      res.status(400).send('Deleting track failed with message ' + err)
     })
 })
 

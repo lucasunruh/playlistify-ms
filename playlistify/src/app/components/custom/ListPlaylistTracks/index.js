@@ -3,10 +3,10 @@ import axios from 'axios'
 import { apiPath } from '../../../utils/constants'
 import ListPlaylistTracks from './ListPlaylistTracks'
 
-const addATrack = (current, addTrack) => {
+const addATrack = (playlist, addTrack) => {
   axios.put(`${apiPath}/playlists/track/add`,
     {
-      _id: current._id,
+      _id: playlist._id,
       id: addTrack._id,
       name: addTrack.name
     })
@@ -14,14 +14,29 @@ const addATrack = (current, addTrack) => {
     .catch(err => console.log(err))
 }
 
+const removeTrack = (playlistId, trackId) => {
+  axios.put(`${apiPath}/playlists/track/remove`,
+    {
+      _idPlaylist: playlistId,
+      _idTrack: trackId
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+}
+
 const ListPlaylistTracksContainer = props => {
-  const [tracks, setTracks] = useState([])
+  const [playlist, setPlaylist] = useState([])
+  const [allTracks, setAllTracks] = useState([])
+  useEffect(() => {
+    props.current && axios.get(`${apiPath}/playlists/${props.current}`)
+      .then(res => setPlaylist(res.data))
+  })
   useEffect(() => {
     axios.get(`${apiPath}/tracks`)
-      .then(res => setTracks(res.data))
-  })
+      .then(res => setAllTracks(res.data))
+  }, [])
   return (
-    <ListPlaylistTracks addATrack={addATrack} tracks={tracks} {...props} />
+    <ListPlaylistTracks addATrack={addATrack} removeTrack={removeTrack} playlist={playlist} allTracks={allTracks} />
   )
 }
 

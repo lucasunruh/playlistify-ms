@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
-const ListPlaylists = ({ playlists, addPlaylist, deletePlaylist, current, setCurrent }) => {
+const ListPlaylists = ({ playlists, addPlaylist, editPlaylist, deletePlaylist, current, setCurrent }) => {
   const [playlistName, setPlaylistName] = useState('')
   const [editing, setEditing] = useState('')
   const [isEditing, setIsEditing] = useState(false)
@@ -26,8 +26,8 @@ const ListPlaylists = ({ playlists, addPlaylist, deletePlaylist, current, setCur
               </td>
             </tr>
             {playlists.length > 0 ? playlists.map(playlist => (
-              <tr key={playlist._id} className={`arrow ${playlist._id === current._id && 'table-active'}`}>
-                <td className='flex-container' onClick={() => setCurrent(playlist)}>
+              <tr key={playlist._id} className={`arrow ${playlist._id === current && 'table-active'}`}>
+                <td className='flex-container' onClick={() => setCurrent(playlist._id)}>
                   {playlist._id === editing
                     ? (
                       <>
@@ -37,14 +37,9 @@ const ListPlaylists = ({ playlists, addPlaylist, deletePlaylist, current, setCur
                           icon='check'
                           title='Submit'
                           onClick={() => {
-                            if (!isEditing) {
-                              /* setEditing(playlist._id)
-                              setEditName(playlist.name)
-                              setIsEditing(true) */
-                            } else {
-                              setEditing('')
-                              setIsEditing(false)
-                            }
+                            editPlaylist(editName, playlist._id)
+                            setEditing('')
+                            setIsEditing(false)
                           }}
                         />
                         <Icon
@@ -52,14 +47,8 @@ const ListPlaylists = ({ playlists, addPlaylist, deletePlaylist, current, setCur
                           icon='times'
                           title='Cancel'
                           onClick={() => {
-                            if (!isEditing) {
-                              /* setEditing(playlist._id)
-                              setEditName(playlist.name)
-                              setIsEditing(true) */
-                            } else {
-                              setEditing('')
-                              setIsEditing(false)
-                            }
+                            setEditing('')
+                            setIsEditing(false)
                           }}
                         />
                       </>
